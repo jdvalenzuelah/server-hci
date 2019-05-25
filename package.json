@@ -1,0 +1,24 @@
+{
+  "name": "server-db",
+  "version": "1.0.0",
+  "description": "Server for project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/val171001/server-db.git"
+  },
+  "author": "Josue Valenzuela",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/val171001/server-db/issues"
+  },
+  "homepage": "https://github.com/val171001/server-db#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "pg": "^7.11.0"
+  }
+}
