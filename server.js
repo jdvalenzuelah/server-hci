@@ -34,6 +34,7 @@ app.post('/client/signup', db.signup)
 app.get('/client/user/points', db.getPoints)
 app.get('/client/codes', db.getAvailableCodes)
 app.post('/client/user/get/code', db.redimPoints)
+app.get('/client/user/get/code/used', db.getUsedCodes)
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
