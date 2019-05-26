@@ -23,7 +23,7 @@ const signup = (req, res) => {
 const login = (req, res) => {
     let {email, password} = req.body
     pool.query(
-        'SELECT usuarioid FROM usuario WHERE email = $1 AND password = $2;',
+        'SELECT * FROM usuario WHERE email = $1 AND password = $2;',
         [email, password]
     ).then(results=> {
         res.status(200).json(results.rows)
