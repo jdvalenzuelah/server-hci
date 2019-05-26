@@ -29,7 +29,7 @@ app.get('/', function(req, res) {
 app.post('/machine/code', db.saveCode)
 
 app.get('/client/scan', db.afterScan)
-app.get('/client/login', db.login)
+app.post('/client/login', db.login)
 app.post('/client/signup', db.signup)
 app.get('/client/user/points', db.getPoints)
 app.get('/client/codes', db.getAvailableCodes)
