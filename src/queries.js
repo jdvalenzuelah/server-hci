@@ -10,14 +10,33 @@ const pool = new Pool({
 
 const signup = (req, res) => {
     let {name, age, email, password} = req.body
+    var able = false
+
     pool.query(
-        'INSERT INTO usuario(nombrecompleto, edad, email, puntos, password) VALUES($1, $2, $3, 0, $4)',
-        [name, age, email, password]
-    ).then(() => {
-        res.status(201).send('User created!')
+        'SELECT usuarioid FROM usuario WHERE email = $1',
+        [email]
+    ).then(results => {
+        if(results.rows.length > 0){
+            res.send(false)
+            return null
+        } else {
+            able = true
+        }
     }).catch(error => {
         res.send(`Unable to save user error: ${error}`)
     })
+
+    if(able){
+        pool.query(
+            'INSERT INTO usuario(nombrecompleto, edad, email, puntos, password) VALUES($1, $2, $3, 0, $4)',
+            [name, age, email, password]
+        ).then(() => {
+            res.status(201).send(true)
+        }).catch(error => {
+            res.send(`Unable to save user error: ${error}`)
+        })
+    }
+    
 }
 
 const login = (req, res) => {
