@@ -67,10 +67,10 @@ const redimPoints = (req, res) => {
 }
 
 const getUsedCodes = (req, res) => {
-    let userId = req.query.userid
+    let userId = req.query.userId
+    var qry = `SELECT codigo.codigo, valorcodigo, marca FROM codigosusados INNER JOIN codigo ON codigo.codigo = codigosusados.codigo WHERE usuarioid = ${userId};`
     pool.query(
-        'SELECT codigo.codigo, valorcodigo, marca FROM codigosusados INNER JOIN codigo ON codigo.codigo = codigosusados.codigo WHERE usuarioid = $1;',
-        [userId]
+        qry,
     ).then(results => {
         res.status(200).json(results.rows)
     }).catch(error => {
