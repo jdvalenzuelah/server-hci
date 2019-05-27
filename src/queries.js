@@ -8,34 +8,30 @@ const pool = new Pool({
   port: 5432,
 })
 
-const signup = (req,res,next) => {
-    let {name, age, email, password} = req.body
-    var able = false
-
+const verifyEmail = (req, res) => {
+    let email = req.body.email
     pool.query(
-        'SELECT usuarioid FROM usuario WHERE email = $1',
+        'SELECT * FROM usuario WHERE email = $1;',
         [email]
     ).then(results => {
-        if(results.rows.length > 0){
-            res.status(200).json({send:false})
-            return null
-        } else {
-            able = true
-        }
+        res.status(200).json(results.rows)
     }).catch(error => {
         res.send(`Unable to save user error: ${error}`)
     })
+}
 
-    if(able){
-        pool.query(
-            'INSERT INTO usuario(nombrecompleto, edad, email, puntos, password) VALUES($1, $2, $3, 0, $4)',
-            [name, age, email, password]
-        ).then(() => {
-            res.status(200).json({send:true})
-        }).catch(error => {
-            res.send(`Unable to save user error: ${error}`)
-        })
-    }
+const signup = (req,res,next) => {
+    let {name, age, email, password} = req.body
+
+    pool.query(
+        'INSERT INTO usuario(nombrecompleto, edad, email, puntos, password) VALUES($1, $2, $3, 0, $4)',
+        [name, age, email, password]
+    ).then(() => {
+        res.status(201).send('User created')
+    }).catch(error => {
+        res.send(`Unable to save user error: ${error}`)
+    })
+    
     
 }
 
@@ -125,6 +121,7 @@ const afterScan = (req,res,next) => {
 module.exports = {
     login,
     signup,
+    verifyEmail,
     getPoints,
     getAvailableCodes,
     getUsedCodes,
