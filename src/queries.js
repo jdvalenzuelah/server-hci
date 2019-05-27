@@ -8,7 +8,7 @@ const pool = new Pool({
   port: 5432,
 })
 
-const signup = (req, res) => {
+const signup = (req,res,next) => {
     let {name, age, email, password} = req.body
     var able = false
 
@@ -39,7 +39,7 @@ const signup = (req, res) => {
     
 }
 
-const login = (req, res) => {
+const login = (req,res,next) => {
     let {email, password} = req.body
     pool.query(
         'SELECT * FROM usuario WHERE email = $1 AND password = $2;',
@@ -51,7 +51,7 @@ const login = (req, res) => {
     })
 }
 
-const getPoints = (req, res) => {
+const getPoints = (req,res,next) => {
     let email = req.query.email
     pool.query(
         'SELECT puntos FROM usuario WHERE email = $1;',
@@ -63,7 +63,7 @@ const getPoints = (req, res) => {
     })
 }
 
-const getAvailableCodes = (req, res) => {
+const getAvailableCodes = (req,res,next) => {
     pool.query(
         'SELECT codigo.codigo, valorcodigo, valorenpuntos, marca FROM codigo LEFT JOIN codigosusados ON codigo.codigo = codigosusados.codigo WHERE codigosusados.codigo IS NULL;'
     ).then(results => {
@@ -73,7 +73,7 @@ const getAvailableCodes = (req, res) => {
     })
 }
 
-const redimPoints = (req, res) => {
+const redimPoints = (req,res,next) => {
     let {userId, code} = req.body
     var qry = `SELECT * FROM usePoints('${code}', ${userId})`
     pool.query(
@@ -85,7 +85,7 @@ const redimPoints = (req, res) => {
     })
 }
 
-const getUsedCodes = (req, res) => {
+const getUsedCodes = (req,res,next) => {
     let userId = req.query.userId
     var qry = `SELECT codigo.codigo, valorcodigo, marca FROM codigosusados INNER JOIN codigo ON codigo.codigo = codigosusados.codigo WHERE usuarioid = ${userId};`
     pool.query(
@@ -97,7 +97,7 @@ const getUsedCodes = (req, res) => {
     })
 }
 
-const  saveCode = (req, res) => {
+const  saveCode = (req,res,next) => {
     let {code, points} = req.body
     pool.query(
         'INSERT INTO codigomaquina VALUES ($1,$2,$3);',
@@ -109,7 +109,7 @@ const  saveCode = (req, res) => {
     })
 }
 
-const afterScan = (req, res) => {
+const afterScan = (req,res,next) => {
     let {code, email} = req.query
     pool.query(
         'SELECT codeScan AS added FROM codeScan($1, $2)',
