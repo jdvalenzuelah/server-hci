@@ -17,7 +17,7 @@ const signup = (req,res,next) => {
         [email]
     ).then(results => {
         if(results.rows.length > 0){
-            res.send(false)
+            res.status(200).json({send:false})
             return null
         } else {
             able = true
@@ -31,7 +31,7 @@ const signup = (req,res,next) => {
             'INSERT INTO usuario(nombrecompleto, edad, email, puntos, password) VALUES($1, $2, $3, 0, $4)',
             [name, age, email, password]
         ).then(() => {
-            res.status(201).send(true)
+            res.status(200).json({send:true})
         }).catch(error => {
             res.send(`Unable to save user error: ${error}`)
         })
